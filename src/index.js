@@ -646,7 +646,7 @@ export default angular.module("mm.image-cropper", []).directive('mmImageCrop', [
 			}
 
 			var cubeHovered = false;
-			var mousemove = function (e) {
+			var mousemove = function mousemove(X, Y) {
 				var dragRedraw = false;
 				var resizeRedraw = false;
 				var cubeHoverRedraw = false;
@@ -654,8 +654,8 @@ export default angular.module("mm.image-cropper", []).directive('mmImageCrop', [
 				var draggedCorner = null;
 				myPos = findPos(element.children());
 
-				iMouseX = e.offsetX;
-				iMouseY = e.offsetY;
+				iMouseX = X;
+				iMouseY = Y;
 
 				cropCtrl.theSelection.rotateCenter.isrotate = false;
 				// in case of drag of whole selector
@@ -746,7 +746,6 @@ export default angular.module("mm.image-cropper", []).directive('mmImageCrop', [
 					iFY = cropCtrl.theSelection.y;
 					iFW = cropCtrl.theSelection.w + cropCtrl.theSelection.x - iFX;
 					iFH = iMouseY - cropCtrl.theSelection.py - iFY;
-
 				}
 
 				if (iFW > cropCtrl.theSelection.csizeh * 2 && iFH > cropCtrl.theSelection.csizeh * 2) {
@@ -827,35 +826,17 @@ export default angular.module("mm.image-cropper", []).directive('mmImageCrop', [
 				cropCtrl.theSelection.py = 0;
 			};
 
-			var touchDown = function (e) {
-				isTouch = true;
-				mousedown(e);
-
-			};
-			var touchMove = function (e) {
-				isTouch = true;
-				mousemove(e);
-			};
-
-			var touchUp = function (e) {
-				isTouch = false;
-				mouseUp(e);
-			};
-
-			element.bind('mousemove', mousemove);
 			element.bind('mousedown', mousedown);
-			element.bind('mouseup', mouseUp);
-
-			element.bind('touchstart', touchDown);
-			element.bind('touchmove', touchMove);
-			element.bind('touchend', touchUp);
+			document.onmousemove = function (e) {
+				var clientRect = canvasEdit.getBoundingClientRect();
+				mousemove(e.pageX - clientRect.left, e.pageY - clientRect.top);
+			};
+			document.onmouseup = mouseUp;
 
 			element.append(canvasEdit);
 		}
 	};
-
-}])
-	.directive('mmViewCrop', [function () {
+}]).directive('mmViewCrop', [function () {
 		return {
 			require : '^mmImageCrop',
 			restrict : 'E',
