@@ -771,11 +771,11 @@ export default angular.module("mm.image-cropper", []).directive('mmImageCrop', [
 
 			};
 
-			var mousedown = function (e) {
+			var mousedown = function (X, Y) {
 				myPos = findPos(element.children());
 
-				iMouseX = e.offsetX;
-				iMouseY = e.offsetY;
+				iMouseX = X;
+				iMouseY = Y;
 
 				cropCtrl.theSelection.px = iMouseX - cropCtrl.theSelection.x;
 				cropCtrl.theSelection.py = iMouseY - cropCtrl.theSelection.y;
@@ -826,7 +826,10 @@ export default angular.module("mm.image-cropper", []).directive('mmImageCrop', [
 				cropCtrl.theSelection.py = 0;
 			};
 
-			element.bind('mousedown', mousedown);
+			document.onmousedown = function (e) {
+				var clientRect = canvasEdit.getBoundingClientRect();
+				mousedown(e.pageX - clientRect.left, e.pageY - clientRect.top);
+			};
 			document.onmousemove = function (e) {
 				var clientRect = canvasEdit.getBoundingClientRect();
 				mousemove(e.pageX - clientRect.left, e.pageY - clientRect.top);
