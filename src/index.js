@@ -828,11 +828,13 @@ export default angular.module("mm.image-cropper", []).directive('mmImageCrop', [
 
 			document.onmousedown = function (e) {
 				var clientRect = canvasEdit.getBoundingClientRect();
-				mousedown(e.pageX - clientRect.left, e.pageY - clientRect.top);
+				var htmlRect = document.getElementsByTagName("html")[0].getBoundingClientRect();
+				mousedown(e.pageX - clientRect.left + htmlRect.left, e.pageY - clientRect.top + htmlRect.top);
 			};
 			document.onmousemove = function (e) {
 				var clientRect = canvasEdit.getBoundingClientRect();
-				mousemove(e.pageX - clientRect.left, e.pageY - clientRect.top);
+				var htmlRect = document.getElementsByTagName("html")[0].getBoundingClientRect();
+				mousemove(e.pageX - clientRect.left + htmlRect.left, e.pageY - clientRect.top + htmlRect.top);
 			};
 			document.onmouseup = mouseUp;
 
