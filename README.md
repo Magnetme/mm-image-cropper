@@ -1,3 +1,5 @@
+[![Magnet.me Logo](https://cdn.magnet.me/images/logo-2015-full.svg)](https://magnet.me?ref=github-mm-image-cropper "Discover the best companies, jobs and internships at Magnet.me")
+
 # mm-image-cropper
 
 image cropper
